@@ -1,8 +1,8 @@
-const MOVING_DIRECTION = Object.freeze({
-  LEFT: 0,
-  RIGHT: 1,
-  DOWN_LEFT: 2,
-  DOWN_RIGHT: 3,
-});
+const MovingDirection = {
+  left: 0,
+  right: 1,
+  downLeft: 2,
+  downRight: 3,
+};
 
-export default MOVING_DIRECTION;
+export default MovingDirection;
