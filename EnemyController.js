@@ -1,32 +1,7 @@
 import Enemy from "./Enemy.js";
 import MovingDirection from "./MovingDirection.js";
 
-function generateRandomMap(rows, cols, values) {
-  let map = [];
-  for (let i = 0; i < rows; i++) {
-      let row = [];
-      for (let j = 0; j < cols; j++) {
-          row.push(values[Math.floor(Math.random() * values.length)]);
-      }
-      map.push(row);
-  }
-  return map;
-}
-
-export default class EnemyController {
-  cartMap = generateRandomMap(2, 4, [1, 2, 3]);
-  catRows = [];
-
-  currentDirection = MovingDirection.right;
-  xVelocity = 0;
-  yVelocity = 0;
-  defaultXVelocity = 1;
-  defaultYVelocity = 1;
-  moveDownTimerDefault = 30;
-  moveDownTimer = this.moveDownTimerDefault;
-  fireBulletTimerDefault = 100;
-  fireBulletTimer = this.fireBulletTimerDefault;
-
+class EnemyController {
   constructor(canvas, enemyBulletController, playerBulletController) {
     this.canvas = canvas;
     this.enemyBulletController = enemyBulletController;
@@ -35,7 +10,30 @@ export default class EnemyController {
     this.enemyDeathSound = new Audio("sounds/meow.mp3");
     this.enemyDeathSound.volume = 0.1;
 
+    this.initializeProperties();
     this.createEnemies();
+  }
+
+  initializeProperties() {
+    this.cartMap = this.generateRandomMap(4, 4, [1, 2, 3]);
+    this.catRows = [];
+    this.currentDirection = MovingDirection.right;
+    this.xVelocity = 0;
+    this.yVelocity = 0;
+    this.defaultXVelocity = 1;
+    this.defaultYVelocity = 1;
+    this.moveDownTimerDefault = 30;
+    this.moveDownTimer = this.moveDownTimerDefault;
+    this.fireBulletTimerDefault = 100;
+    this.fireBulletTimer = this.fireBulletTimerDefault;
+  }
+
+  generateRandomMap(rows, cols, values) {
+    return Array.from({ length: rows }, () => 
+      Array.from({ length: cols }, () => 
+        values[Math.floor(Math.random() * values.length)]
+      )
+    );
   }
 
   draw(ctx) {
@@ -48,47 +46,38 @@ export default class EnemyController {
   }
 
   collisionDetection() {
-    let enemiesHit = 0; // Initialize a counter for enemies hit
-
+    let enemiesHit = 0;
     this.catRows.forEach((enemyRow) => {
-        enemyRow.forEach((enemy, enemyIndex) => {
-            if (this.playerBulletController.collideWith(enemy)) {
-                this.enemyDeathSound.currentTime = 0;
-                this.enemyDeathSound.play();
-                enemyRow.splice(enemyIndex, 1);
-                enemiesHit++; // Increment the counter when an enemy is hit
-            }
-        });
+      enemyRow.forEach((enemy, enemyIndex) => {
+        if (this.playerBulletController.collideWith(enemy)) {
+          this.playEnemyDeathSound();
+          enemyRow.splice(enemyIndex, 1);
+          enemiesHit++;
+        }
+      });
     });
+    this.catRows = this.catRows.filter(row => row.length > 0);
+    return enemiesHit;
+  }
 
-    this.catRows = this.catRows.filter((enemyRow) => enemyRow.length > 0);
+  playEnemyDeathSound() {
+    this.enemyDeathSound.currentTime = 0;
+    this.enemyDeathSound.play();
+  }
 
-    return enemiesHit; // Return the number of enemies hit
-}
-resetEnemies(fireRate, speedMultiplier, rows, cols) {
-  // Regenerate the cartMap for the new level
-  this.cartMap = generateRandomMap(rows, cols, [1, 2, 3]);
-  // Clear the existing enemies
-  this.catRows = [];
-  
-  // Create new enemies for the new level
-  this.createEnemies();
-  
-  // Adjust the fire rate for the new level
-  this.fireBulletTimerDefault = fireRate;
-  this.fireBulletTimer = this.fireBulletTimerDefault;
-  
-  // Adjust the speed of the enemies based on the speedMultiplier
-  this.defaultXVelocity *= speedMultiplier;
-  this.defaultYVelocity *= speedMultiplier;
-  
-  // Reset the movement properties
-  this.currentDirection = MovingDirection.right;
-  this.xVelocity = 0;
-  this.yVelocity = 0;
-  this.moveDownTimer = this.moveDownTimerDefault;
-}
-
+  resetEnemies(fireRate, speedMultiplier, rows, cols) {
+    this.cartMap = this.generateRandomMap(rows, cols, [1, 2, 3]);
+    this.catRows = [];
+    this.createEnemies();
+    this.fireBulletTimerDefault = fireRate;
+    this.fireBulletTimer = this.fireBulletTimerDefault;
+    this.defaultXVelocity *= speedMultiplier;
+    this.defaultYVelocity *= speedMultiplier;
+    this.currentDirection = MovingDirection.right;
+    this.xVelocity = 0;
+    this.yVelocity = 0;
+    this.moveDownTimer = this.moveDownTimerDefault;
+  }
 
   fireBullet() {
     this.fireBulletTimer--;
@@ -163,18 +152,13 @@ resetEnemies(fireRate, speedMultiplier, rows, cols) {
     });
   }
 
-  happy = () => {};
-
   createEnemies() {
     this.cartMap.forEach((row, rowIndex) => {
-      this.catRows[rowIndex] = [];
-      row.forEach((enemyNubmer, enemyIndex) => {
-        if (enemyNubmer > 0) {
-          this.catRows[rowIndex].push(
-            new Enemy(enemyIndex * 50, rowIndex * 35, enemyNubmer)
-          );
-        }
-      });
+      this.catRows[rowIndex] = row
+        .map((enemyNumber, enemyIndex) => 
+          enemyNumber > 0 ? new Enemy(enemyIndex * 50, rowIndex * 35, enemyNumber) : null
+        )
+        .filter(enemy => enemy !== null);
     });
   }
 
@@ -182,3 +166,5 @@ resetEnemies(fireRate, speedMultiplier, rows, cols) {
     return this.catRows.flat().some((enemy) => enemy.collideWith(sprite));
   }
 }
+
+export default EnemyController;
