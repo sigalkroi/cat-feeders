@@ -2,11 +2,9 @@ import EnemyController from "./EnemyController.js";
 import Player from "./Player.js";
 import BulletController from "./BulletController.js";
 
-const restartGameButton = document.getElementById("restartGameButton");
 const playAgainButton = document.getElementById("playAgainButton");
 playAgainButton.addEventListener("click", restartGame);
 playAgainButton.style.display = "none";
-restartGameButton.addEventListener("click", restartGame);
 
 const CANVAS_WIDTH = 600;
 const CANVAS_HEIGHT = 600;
