@@ -1,16 +1,21 @@
 import Enemy from "./Enemy.js";
 import MovingDirection from "./MovingDirection.js";
 
+function generateRandomMap(rows, cols, values) {
+  let map = [];
+  for (let i = 0; i < rows; i++) {
+      let row = [];
+      for (let j = 0; j < cols; j++) {
+          row.push(values[Math.floor(Math.random() * values.length)]);
+      }
+      map.push(row);
+  }
+  return map;
+}
+
 export default class EnemyController {
-  enemyMap = [
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [2, 2, 2, 3, 3, 3, 3, 2, 2, 2],
-    [2, 2, 2, 3, 3, 3, 3, 2, 2, 2],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
-  ];
-  enemyRows = [];
+  cartMap = generateRandomMap(2, 4, [1, 2, 3]);
+  catRows = [];
 
   currentDirection = MovingDirection.right;
   xVelocity = 0;
@@ -27,7 +32,7 @@ export default class EnemyController {
     this.enemyBulletController = enemyBulletController;
     this.playerBulletController = playerBulletController;
 
-    this.enemyDeathSound = new Audio("sounds/enemy-death.wav");
+    this.enemyDeathSound = new Audio("sounds/meow.mp3");
     this.enemyDeathSound.volume = 0.1;
 
     this.createEnemies();
@@ -43,24 +48,53 @@ export default class EnemyController {
   }
 
   collisionDetection() {
-    this.enemyRows.forEach((enemyRow) => {
-      enemyRow.forEach((enemy, enemyIndex) => {
-        if (this.playerBulletController.collideWith(enemy)) {
-          this.enemyDeathSound.currentTime = 0;
-          this.enemyDeathSound.play();
-          enemyRow.splice(enemyIndex, 1);
-        }
-      });
+    let enemiesHit = 0; // Initialize a counter for enemies hit
+
+    this.catRows.forEach((enemyRow) => {
+        enemyRow.forEach((enemy, enemyIndex) => {
+            if (this.playerBulletController.collideWith(enemy)) {
+                this.enemyDeathSound.currentTime = 0;
+                this.enemyDeathSound.play();
+                enemyRow.splice(enemyIndex, 1);
+                enemiesHit++; // Increment the counter when an enemy is hit
+            }
+        });
     });
 
-    this.enemyRows = this.enemyRows.filter((enemyRow) => enemyRow.length > 0);
-  }
+    this.catRows = this.catRows.filter((enemyRow) => enemyRow.length > 0);
+
+    return enemiesHit; // Return the number of enemies hit
+}
+resetEnemies(fireRate, speedMultiplier, rows, cols) {
+  // Regenerate the cartMap for the new level
+  this.cartMap = generateRandomMap(rows, cols, [1, 2, 3]);
+  // Clear the existing enemies
+  this.catRows = [];
+  
+  // Create new enemies for the new level
+  this.createEnemies();
+  
+  // Adjust the fire rate for the new level
+  this.fireBulletTimerDefault = fireRate;
+  this.fireBulletTimer = this.fireBulletTimerDefault;
+  
+  // Adjust the speed of the enemies based on the speedMultiplier
+  this.defaultXVelocity *= speedMultiplier;
+  this.defaultYVelocity *= speedMultiplier;
+  
+  // Reset the movement properties
+  this.currentDirection = MovingDirection.right;
+  this.xVelocity = 0;
+  this.yVelocity = 0;
+  this.moveDownTimer = this.moveDownTimerDefault;
+}
+
 
   fireBullet() {
     this.fireBulletTimer--;
     if (this.fireBulletTimer <= 0) {
       this.fireBulletTimer = this.fireBulletTimerDefault;
-      const allEnemies = this.enemyRows.flat();
+      const allEnemies = this.catRows.flat();
       const enemyIndex = Math.floor(Math.random() * allEnemies.length);
       const enemy = allEnemies[enemyIndex];
       this.enemyBulletController.shoot(enemy.x + enemy.width / 2, enemy.y, -3);
@@ -83,7 +117,7 @@ export default class EnemyController {
   }
 
   updateVelocityAndDirection() {
-    for (const enemyRow of this.enemyRows) {
+    for (const enemyRow of this.catRows) {
       if (this.currentDirection == MovingDirection.right) {
         this.xVelocity = this.defaultXVelocity;
         this.yVelocity = 0;
@@ -123,7 +157,7 @@ export default class EnemyController {
   }
 
   drawEnemies(ctx) {
-    this.enemyRows.flat().forEach((enemy) => {
+    this.catRows.flat().forEach((enemy) => {
       enemy.move(this.xVelocity, this.yVelocity);
       enemy.draw(ctx);
     });
@@ -132,11 +166,11 @@ export default class EnemyController {
   happy = () => {};
 
   createEnemies() {
-    this.enemyMap.forEach((row, rowIndex) => {
-      this.enemyRows[rowIndex] = [];
+    this.cartMap.forEach((row, rowIndex) => {
+      this.catRows[rowIndex] = [];
       row.forEach((enemyNubmer, enemyIndex) => {
         if (enemyNubmer > 0) {
-          this.enemyRows[rowIndex].push(
+          this.catRows[rowIndex].push(
             new Enemy(enemyIndex * 50, rowIndex * 35, enemyNubmer)
           );
         }
@@ -145,6 +179,6 @@ export default class EnemyController {
   }
 
   collideWith(sprite) {
-    return this.enemyRows.flat().some((enemy) => enemy.collideWith(sprite));
+    return this.catRows.flat().some((enemy) => enemy.collideWith(sprite));
   }
 }
