@@ -1,63 +1,72 @@
-// Description: This file contains the functions for the menu page.
+document.addEventListener('DOMContentLoaded', initPage);
 
-const nameDisplay = document.getElementById("nameDisplay");
-const nameDisplayHebrew = document.getElementById("nameDisplayHebrew");
-const playerName = localStorage.getItem("currentUsername");
+function initPage() {
+    updateUsernameDisplay();
+    setupModalEvents();
+}
 
-document.addEventListener('DOMContentLoaded', function() {
-    const username = localStorage.getItem("currentUsername");
-    if (username) {
-        const nameDisplay = document.getElementById("nameDisplay");
-        nameDisplay.textContent = username;
+function updateUsernameDisplay() {
+    const nameDisplay = document.getElementById("nameDisplay");
+    const playerName = localStorage.getItem("currentUsername");
+    if (playerName) {
+        nameDisplay.textContent = playerName;
     }
-});
+}
 
 function logout() {
-    // Clear the current user's session data
     localStorage.removeItem("currentUsername");
-    // Redirect to the start page
-    window.location.href = "index.html";
+    navigateTo("index.html");
 }
 
-// Get the modal and the close button
-var modal = document.getElementById("instructionsModal");
-var closeButton = document.getElementsByClassName("close")[0];
-
-// Show the modal
-function showInstructions() {
-  modal.style.display = "block";
+function navigateTo(page) {
+    window.location.href = page;
 }
 
-// Hide the modal when the close button is clicked
-closeButton.onclick = function() {
-  modal.style.display = "none";
+function setupModalEvents() {
+    const modal = document.getElementById("instructionsModal");
+    const closeButton = document.querySelector(".close");
+
+    closeButton.addEventListener("click", closeModal);
+
+    window.addEventListener("click", function(event) {
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
 }
 
-// Hide the modal when anywhere outside of the modal is clicked
-window.onclick = function(event) {
-  if (event.target == modal) {
+function closeModal() {
+    const modal = document.getElementById("instructionsModal");
     modal.style.display = "none";
-  }
+}
+
+function showInstructions() {
+    const modal = document.getElementById("instructionsModal");
+    modal.style.display = "block";
 }
 
 function switchLanguage(lang) {
-    // Set the direction
+    setDirection(lang);
+    translateText(lang);
+}
+
+function setDirection(lang) {
     if (lang === 'he') {
-      document.body.classList.add('rtl');
+        document.body.classList.add('rtl');
     } else {
-      document.body.classList.remove('rtl');
+        document.body.classList.remove('rtl');
     }
-  
-    // Translate the text
+}
+
+function translateText(lang) {
     for (let key in translations[lang]) {
-      const elements = document.querySelectorAll(`[data-translate="${key}"]`);
-      elements.forEach(element => {
-        if (element.tagName === 'BUTTON') {
-          element.innerHTML = translations[lang][key];
-        } else {
-          element.textContent = translations[lang][key];
-        }
-      });
+        const elements = document.querySelectorAll(`[data-translate="${key}"]`);
+        elements.forEach(element => {
+            if (element.tagName === 'BUTTON') {
+                element.innerHTML = translations[lang][key];
+            } else {
+                element.textContent = translations[lang][key];
+            }
+        });
     }
-  }
-  
+}

@@ -142,7 +142,7 @@ function nextLevel() {
         const levelConfig = levelMap[gameState.level];
         if (levelConfig) {
             enemyController.resetEnemies(levelConfig.fireRate, levelConfig.speedMultiplier, levelConfig.rows, levelConfig.cols);
-            gameState.score += 50 * gameState.level;
+            gameState.score += 50 * gameState.level; // Bonus points for completing a level
         }
     }
 }

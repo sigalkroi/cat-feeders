@@ -1,77 +1,149 @@
-canvas {
-    box-shadow: black 20px 10px 50px;
-}
-h1 {
-    margin: 0px;
-    margin-bottom: 10px;
-    font-size: 2.9em;
-    font-family: "Helvetica";
-}
-body {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    padding: 0px;
-    margin: 0px;
-    height: 100vh;
-    background: linear-gradient(
-      0deg,
-      rgb(97, 98, 99) 0%,
-      rgba(0, 0, 0, 0) 100%
-    );
+/* Reset some default styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-body.rtl {
-    direction: rtl;
-    text-align: right;
-  }
-  
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: linear-gradient(45deg, #A8E6CF, #DCEDC1, #FFD3B6, #FFAAA5); /* Pastel gradient */
+    font-family: 'Arial', sans-serif;
+}
+
+canvas {
+    box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+
+h1, h2 {
+    margin-bottom: 15px;
+    font-family: "Helvetica", sans-serif;
+    color: #333;
+    padding: 10px; /* Prevents overlapping */
+    display: flex; /* Added flexbox for centering */
+    justify-content: center; /* Horizontally center the content */
+    align-items: center; /* Vertically center the content */
+    width: 100%; /* Ensure it takes the full width */
+    text-align: center; /* Ensure text is centered */
+}
+
+body.rtl h1, body.rtl h2 {
+    text-align: center; /* Override any text-align from RTL */
+}
+
+/* Buttons */
+.buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Horizontally center the buttons */
+    gap: 10px; /* Space between buttons */
+    width: 100%; /* Ensure it takes the full width */
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #6c757d;
+    color: white;
+    transition: background-color 0.3s ease;
+
+    /* Ensure text is centered */
+    text-align: center;
+    justify-content: center;
+}
+
+button:hover {
+    background-color: #5a6268;
+}
+
+body.rtl button {
+    text-align: center; /* Override any text-align from RTL */
+}
+
 /* Modal styles */
 .modal {
-    display: none; 
-    position: fixed; 
-    z-index: 1; 
-    left: 0;
+    display: none;
+    position: fixed;
+    z-index: 10;
     top: 0;
-    width: 100%; 
-    height: 100%; 
-    overflow: auto; 
-    background-color: rgba(0,0,0,0.4); 
-  }
-  
-  .modal-content {
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow: auto;
+}
+
+.modal-content {
     background-color: #fefefe;
-    margin: 15% auto; 
+    margin: 10% auto;
     padding: 20px;
-    border: 1px solid #888;
-    width: 80%; 
-  }
-  
-  .close {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 80%;
+    box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.1);
+}
+
+.close {
     color: #aaa;
     float: right;
     font-size: 28px;
     font-weight: bold;
-  }
-  
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
     cursor: pointer;
-  }
-  
+}
+
+.close:hover,
+.close:focus {
+    color: #555;
+}
+
 .instructions-container {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .instructions {
-    width: 45%; /* Adjust this value if needed */
-    box-sizing: border-box;
-    padding: 10px;
+    width: 45%;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f5f5f5;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .instructions.hebrew {
     text-align: right;
+}
+
+/* Table styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #FFAAA5; /* Pastel Pink */
+    color: white;
+}
+
+tr:hover {
+    background-color: #f5f5f5;
 }

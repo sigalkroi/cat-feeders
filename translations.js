@@ -1,7 +1,7 @@
 const translations = {
     en: {
-      menu: "Menu - Cat Feeders",
-      greeting: "Hey there",
+      menu: "Menu",
+      greeting: "Hey there, ",
       startGame: "Start Game",
       instructions: "Instructions",
       leaderboard: "Leaderboard",
@@ -10,7 +10,7 @@ const translations = {
     },
     he: {
       menu: "תפריט - מאכילי החתולים",
-      greeting: "שלום",
+      greeting: "איזה כיף שהצטרפת למאכילי החתולים, ",
       startGame: "התחל משחק",
       instructions: "הוראות",
       leaderboard: "לוח התוצאות",

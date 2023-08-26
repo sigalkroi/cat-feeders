@@ -1,58 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Menu - Cat Feeders</title>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat Feeders - Menu</title>
     <link rel="stylesheet" href="styles.css">
-  </head>
-  <body>
-    <button onclick="switchLanguage('en')">English</button>
-    <button onclick="switchLanguage('he')">עברית</button>
-
-    <h1 data-translate="menu">Menu</h1>
-    <h2 data-translate="greeting">Hey there <span id="nameDisplay"></span></h2>    
-    <img src="images/howyoudoin.gif" alt="Joey from friends" width="300" height="200">
-    <br>
-    <div class="buttons">
-      <button data-translate="startGame" onclick="window.location.href='game.html'">Start Game</button>
-      <button data-translate="instructions" onclick="showInstructions()">Instructions</button>
-      <button data-translate="leaderboard" onclick="window.location.href='leaderboard.html'">Leaderboard</button>
-      <button data-translate="userHistory" onclick="window.location.href='history.html'">User History</button>
-      <button data-translate="logout" onclick="logout()">Logout</button>      
+</head>
+<body>
+    <div class="language-buttons">
+        <button onclick="switchLanguage('en')">English</button>
+        <button onclick="switchLanguage('he')">עברית</button>
     </div>
+
+    <header>
+        <h1 data-translate="menu">Menu</h1>
+        <h2> <span data-translate="greeting"> Hey there, </span> <span id="nameDisplay"> </span></h2>
+    </header>
+
+    <figure>
+        <img src="images/howyoudoin.gif" alt="Joey from Friends" width="300" height="200">
+    </figure>
+
+    <nav class="buttons">
+        <button data-translate="startGame" onclick="navigateTo('game.html')">Start Game</button>
+        <button data-translate="instructions" onclick="showInstructions()">Instructions</button>
+        <button data-translate="leaderboard" onclick="navigateTo('leaderboard.html')">Leaderboard</button>
+        <button data-translate="userHistory" onclick="navigateTo('history.html')">User History</button>
+        <button data-translate="logout" onclick="logout()">Logout</button>
+    </nav>
+
     <div id="instructionsModal" class="modal">
-      <div class="modal-content">
-          <span class="close">&times;</span>
-          <div class="instructions-container">
-              <!-- English Instructions -->
-              <div class="instructions english">
-                  <h2>Instructions for Cat Feeders</h2>
-                  <p>Here are the instructions for playing Cat Feeders:</p>
-                  <ul>
-                      <li>Use the arrow keys to move left and right.</li>
-                      <li>Press space to throw food at the cats.</li>
-                      <li>Avoid getting hit by the cats' bullets.</li>
-                      <li>Feed all the cats to proceed to the next level.</li>
-                  </ul>
-              </div>
-              <!-- Hebrew Instructions -->
-              <div class="instructions hebrew">
-                  <h2>הוראות למשחק מאכילת החתולים</h2>
-                  <p>הנה ההוראות למשחק:</p>
-                  <ul dir="rtl">
-                      <li>השתמש במקשי החצים להזזה שמאלה וימינה.</li>
-                      <li>לחץ על הרווח כדי לזרוק אוכל לחתולים.</li>
-                      <li>הימנע מלהיפגע בירי החתולים.</li>
-                      <li>האכל את כל החתולים כדי להמשיך לשלב הבא.</li>
-                  </ul>
-              </div>
-          </div>
-      </div>
-  </div>
-  
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div class="instructions-container">
+                <div class="instructions english">
+                    <h2>Instructions for Cat Feeders</h2>
+                    <ul>
+                        <li>Use the arrow keys to move left and right.</li>
+                        <li>Press space to throw food at the cats.</li>
+                        <li>Avoid getting hit by the cats' bullets.</li>
+                        <li>Feed all the cats to proceed to the next level.</li>
+                    </ul>
+                </div>
+                <div class="instructions hebrew">
+                    <h2>הוראות למשחק מאכילי החתולים</h2>
+                    <ul dir="rtl">
+                        <li>השתמש במקשי החצים להזזה שמאלה וימינה.</li>
+                        <li>לחץ על הרווח כדי לזרוק אוכל לחתולים.</li>
+                        <li>ברח מהכדורים אותם יורים החתולים</li>
+                        <li>האכל את כל החתולים כדי להמשיך לשלב הבא.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="translations.js"></script>
     <script src="menu.js"></script>
-  </body>
+</body>
 </html>
