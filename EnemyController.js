@@ -65,17 +65,15 @@ class EnemyController {
     this.enemyDeathSound.play();
   }
 
-  resetEnemies(fireRate, speedMultiplier, rows, cols) {
+  resetEnemies(fireRate, speed, rows, cols) {
     this.cartMap = this.generateRandomMap(rows, cols, [1, 2, 3]);
     this.catRows = [];
     this.createEnemies();
     this.fireBulletTimerDefault = fireRate;
     this.fireBulletTimer = this.fireBulletTimerDefault;
-    this.defaultXVelocity *= speedMultiplier;
-    this.defaultYVelocity *= speedMultiplier;
+    this.defaultXVelocity = speed;
+    this.defaultYVelocity = speed;
     this.currentDirection = MovingDirection.right;
-    this.xVelocity = 0;
-    this.yVelocity = 0;
     this.moveDownTimer = this.moveDownTimerDefault;
   }
 

@@ -3,7 +3,9 @@ import Player from "./Player.js";
 import BulletController from "./BulletController.js";
 
 const restartGameButton = document.getElementById("restartGameButton");
-
+const playAgainButton = document.getElementById("playAgainButton");
+playAgainButton.addEventListener("click", restartGame);
+playAgainButton.style.display = "none";
 restartGameButton.addEventListener("click", restartGame);
 
 const CANVAS_WIDTH = 600;
@@ -20,6 +22,8 @@ const playerBulletController = new BulletController(canvas, 10, "blue", true);
 const enemyBulletController = new BulletController(canvas, 4, "black", false);
 const enemyController = new EnemyController(canvas, enemyBulletController, playerBulletController);
 const player = new Player(canvas, 3, playerBulletController);
+
+
 
 let gameState = {
     playerName: localStorage.getItem("currentUsername"),
@@ -105,8 +109,15 @@ function displayGameOver() {
         ctx.fillStyle = "blue";
         ctx.font = "70px Arial";
         ctx.fillText(text, canvas.width / textOffset, canvas.height / 2);
+        
+        // Show the "Play Again" button
+        playAgainButton.style.display = "block";
+    } else {
+        // Hide the "Play Again" button when the game is not over
+        playAgainButton.style.display = "none";
     }
 }
+
 
 function displayPlayerInfo() {
     ctx.fillStyle = "white";
