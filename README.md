@@ -1,17 +1,9 @@
-Todo:
+Welcome to the Cat Feeders game!
 
-* add score tracking
+This is a simple JS game, similar to space invaiders.
 
+In order to win the player will feed the cats. once all the cats are fed, the player moves up to the next stage.
 
-1.  V add user name insertion - 
-    O save it somewhere and connect the score to the player
-    O Desply 
-2. add levels
-3. change enemydeath to meow wav
-4. create leaderboard
-5. hebrew version
-6. 
+Leaderboard and personal history is provided, and so does the instructions.
 
-
-... add readme
-... take recording of game
+The game is happening inside a canvas and can be restarted.
